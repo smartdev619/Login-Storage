@@ -31,6 +31,7 @@ export default class Login extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
+    console.log(props, "props");
     if (props.user) {
       props.navigation.navigate("Dashboard");
     }
@@ -60,6 +61,12 @@ export default class Login extends Component<Props, State> {
       });
       loginUser(findUser[0]);
       navigation.navigate("Dashboard");
+    } else {
+      Toast.show({
+        text: "Incorrect Credentials",
+        buttonText: "Okay",
+        duration: 3000,
+      });
     }
   }
 

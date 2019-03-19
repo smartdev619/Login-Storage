@@ -10,7 +10,7 @@ import {
 
 const initialState = {
   phase: INIT,
-  user: [],
+  user: null,
   error: null,
 };
 
