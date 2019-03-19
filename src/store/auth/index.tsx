@@ -1,44 +1,51 @@
 import { INIT, LOADING, SUCCESS, ERROR } from "../../utils/constants";
 import { actionType, userType } from "../../utils/types";
 import {
-  REGISTER_USER,
-  REGISTER_USER_SUCCESS,
-  REGISTER_USER_ERROR
+  LOGIN_USER,
+  LOGIN_USER_SUCCESS,
+  LOGIN_USER_ERROR,
+  LOGOUT_USER,
 } from "./actionTypes";
 
 
 const initialState = {
   phase: INIT,
-  users: [],
+  user: [],
   error: null,
 };
 
-const registerStore = (state = initialState, action: actionType) => {
+const authStore = (state = initialState, action: actionType) => {
   switch (action.type) {
-    case REGISTER_USER:
+    case LOGIN_USER:
       return {
         ...state,
         phase: LOADING,
       };
-    case REGISTER_USER_SUCCESS:
+    case LOGIN_USER_SUCCESS:
       return {
         ...state,
         phase: SUCCESS,
-        users: action.payload,
+        user: action.payload,
       };
-    case REGISTER_USER_ERROR:
+    case LOGIN_USER_ERROR:
       return {
         ...state,
         phase: ERROR,
       };
+    case LOGOUT_USER:
+      return initialState;
     default:
       return state;
   }
 };
 
-export const registerUser = (users: Array<userType>) => ({
-  type: REGISTER_USER_SUCCESS,
-  payload: users,
+export const loginUser = (user: userType) => ({
+  type: LOGIN_USER_SUCCESS,
+  payload: user,
 });
 
-export default registerStore;
+export const logoutUser = () => ({
+  type: LOGOUT_USER,
+});
+
+export default authStore;

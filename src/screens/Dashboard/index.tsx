@@ -1,10 +1,14 @@
 import React, { Component } from "react";
+import {logoutUser} from "../../store/auth";
+import {connect} from "react-redux";
+import {userType} from "../../utils/types";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 
 interface Props {
+  user: userType;
 }
 
-export default class Dashboard extends Component<Props> {
+class Dashboard extends Component<Props> {
   public static navigationOptions = {
     header: null,
   };
@@ -34,3 +38,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
+
+const mapStateToProps = (state: any) => ({
+  user: state.authStore.user,
+});
+
+const mapDispatchToProps = {
+  logoutUser : () => logoutUser(),
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

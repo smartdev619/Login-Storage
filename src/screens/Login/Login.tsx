@@ -2,14 +2,22 @@ import React, { Component } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { Button, Toast } from "native-base";
 import { NavigationScreenProp } from "react-navigation";
+
+import {userType} from "../../utils/types";
 import MyInput from "../../components/MyInput";
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
-  users: any;
+  users: Array<userType>;
+  user: userType;
+  loginUser: Function;
 }
 
-export default class Login extends Component<Props> {
+interface State {
+  formValues: userType;
+}
+
+export default class Login extends Component<Props, State> {
   public static navigationOptions = {
     header: null,
   };
@@ -21,7 +29,14 @@ export default class Login extends Component<Props> {
     },
   };
 
-  public gotoRegister = () => {
+  constructor(props: Props) {
+    super(props);
+    if (props.user) {
+      props.navigation.navigate("Dashboard");
+    }
+  }
+
+  public gotoRegister = (): void => {
     this.props.navigation.navigate("Register");
   }
 
@@ -33,16 +48,17 @@ export default class Login extends Component<Props> {
     }));
   }
 
-  public loginUser = () => {
-    const { users, navigation } = this.props;
+  public loginUser = (): void => {
+    const { users, navigation, loginUser} = this.props;
     const {formValues: {username, password}} = this.state;
-    const findUser = users.filter((user: any) => user.username.toLowerCase() === username.toLowerCase() && user.password === password);
+    const findUser = users.filter((user: userType) => user.username.toLowerCase() === username.toLowerCase() && user.password === password);
     if (findUser.length) {
       Toast.show({
         text: "Login Successfully",
         buttonText: "Okay",
         duration: 3000,
       });
+      loginUser(findUser[0]);
       navigation.navigate("Dashboard");
     }
   }
